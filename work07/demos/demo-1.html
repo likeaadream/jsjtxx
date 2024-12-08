@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html;charset=utf-8">
+    <title>Chap7 Demo 5 Cube with Reflection Map</title>
+    <script id="vertex-shader" type="x-shader/x-vertex">
+#version 300 es
+out vec3 R;
+
+in vec4 vPosition;
+in vec4 vNormal;
+
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+uniform mat3 normalMatrix;
+
+void main()
+{
+	gl_Position = projectionMatrix * modelViewMatrix * vPosition;
+	vec3 eyePos = ( modelViewMatrix * vPosition ).xyz;
+	vec3 N = normalize( normalMatrix * vNormal.xyz );
+	R = reflect( eyePos, N );
+}
+	</script>
+
+	<script id="fragment-shader" type="x-shader/x-fragment">
+#version 300 es
+precision mediump float;
+
+in vec3 R;
+uniform samplerCube texMap;
+
+out vec4 fColor;
+
+void main()
+{
+	vec4 texColor = texture( texMap, R );
+	fColor = texColor;
+}
+	</script>
+
+    <script type="text/javascript" src="../js/common/webgl-utils.js"></script>
+    <script type="text/javascript" src="../js/common/initShaders.js"></script>
+    <script type="text/javascript" src="../js/common/gl-matrix-min.js"></script>
+
+    <script type="text/javascript" src="../js/ch07/Sphere.js"></script>
+</head>
+
+<body>
+    <h1>给球体添加纹理</h1>
+    <canvas id="gl-canvas" width="600" height="600">
+        你的浏览器不支持HTML5 canvas元素
+    </canvas>
+
+    <button id="ButtonX">Rotate X</button>
+    <button id="ButtonY">Rotate Y</button>
+    <button id="ButtonZ">Rotate Z</button>
+    <button id="ButtonT">Toggle Rotation</button>
+</body>
+</html>

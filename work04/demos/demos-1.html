@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>demos1</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        attribute vec4 vPosition;
+        attribute vec4 vColor;
+        varying vec4 fColor;
+        void main() {
+            gl_Position = vPosition;
+            fColor = vColor;
+        }
+    </script>
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        precision mediump float;
+        varying vec4 fColor;
+        void main() {
+            gl_FragColor = fColor;
+        }
+    </script>
+
+    <script type="text/javascript" src="../js/common/webgl-utils.js"></script>
+    <script type="text/javascript" src="../js/common/initShaders.js"></script>
+    <script type="text/javascript" src="../js/common/gl-matrix-min.js"></script>
+
+    <script type="text/javascript" src="../js/ch04/flashOne.js"></script>
+</head>
+
+<body onload="initRectCanvas()">
+    <h1>demo1</h1>
+    <canvas id="rect-canvas" width="512" height="512">你的浏览器不支持HTML5 canvas元素</canvas>
+    <div>
+        <label for="x">X坐标:</label>
+        <input type="number" id="x" value="0">
+        <label for="y">Y坐标:</label>
+        <input type="number" id="y" value="0">
+        <h4>请在小范围输入下x,y坐标如（【-0.5，0.5】），否则可能生成在画布外没有显示！</h4>
+        <button onclick="drawSquare()">绘制正方形</button>
+    </div>
+</body>
+
+</html>

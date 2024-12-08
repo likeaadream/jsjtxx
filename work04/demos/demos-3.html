@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>demos2</title>
+    <style>
+        canvas { border: 1px solid black; }
+        #controls { margin-top: 10px; }
+    </style>
+    <script type="text/javascript" src="../js/common/webgl-utils.js"></script>
+    <script type="text/javascript" src="../js/common/initShaders.js"></script>
+    <script type="text/javascript" src="../js/common/gl-matrix-min.js"></script>
+
+</head>
+<body>
+    <canvas id="canvas" width="600" height="600"></canvas>
+    <div id="controls">
+        <div>
+            <h3>三角形缩放</h3>
+            <label>缩放因子: <input type="number" id="triangleScale" value="1" step="0.1"></label>
+            <button id="drawTriangle">绘制三角形</button>
+        </div>
+        <div>
+            <h3>正方形旋转</h3>
+            <label>旋转角度 (度): <input type="number" id="squareRotate" value="0" step="1"></label>
+            <button id="drawSquare">绘制正方形</button>
+        </div>
+        <div>
+            <h3>梯形平移</h3>
+            <label>X平移: <input type="number" id="trapezoidTranslateX" value="0" step="1"></label>
+            <label>Y平移: <input type="number" id="trapezoidTranslateY" value="0" step="1"></label>
+            <button id="drawTrapezoid">绘制梯形</button>
+        </div>
+    </div>
+
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        attribute vec4 vPosition;
+        attribute vec4 vColor;
+        varying vec4 fColor;
+
+        void main(void) {
+            gl_Position = vPosition;
+            fColor = vColor;
+        }
+    </script>
+
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        precision mediump float;
+        varying vec4 fColor;
+
+        void main(void) {
+            gl_FragColor = fColor;
+        }
+    </script>
+
+    <script type="text/javascript" src="../js/ch04/flashTwo.js"></script>
+</body>
+</html>

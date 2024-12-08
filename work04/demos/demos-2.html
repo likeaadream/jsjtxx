@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正方形变换</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+            margin-bottom: 20px;
+        }
+        .slider-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas" width="600" height="400"></canvas>
+
+    <div class="slider-container">
+        <label for="translateX">平移X轴:</label>
+        <input type="range" id="translateX" min="-200" max="200" value="0">
+        <label for="translateY">平移Y轴:</label>
+        <input type="range" id="translateY" min="-200" max="200" value="0">
+        <label for="rotateX">绕X轴旋转:</label>
+        <input type="range" id="rotateX" min="0" max="360" value="0">
+        <label for="rotateY">绕Y轴旋转:</label>
+        <input type="range" id="rotateY" min="0" max="360" value="0">
+        <label for="scaleX">X轴缩放:</label>
+        <input type="range" id="scaleX" min="0.1" max="3" value="1" step="0.1">
+        <label for="scaleY">Y轴缩放:</label>
+        <input type="range" id="scaleY" min="0.1" max="3" value="1" step="0.1">
+    </div>
+
+    <script>
+        const canvas = document.getElementById('myCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let squareSize = 100; // 正方形的初始大小
+        let centerX = canvas.width / 2; // 正方形中心的X坐标
+        let centerY = canvas.height / 2; // 正方形中心的Y坐标
+
+        // 获取滑块元素
+        const translateXSlider = document.getElementById('translateX');
+        const translateYSlider = document.getElementById('translateY');
+        const rotateXSlider = document.getElementById('rotateX');
+        const rotateYSlider = document.getElementById('rotateY');
+        const scaleXSlider = document.getElementById('scaleX');
+        const scaleYSlider = document.getElementById('scaleY');
+
+        function drawSquare() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // 清空画布
+
+            // 获取滑块值
+            const translateX = parseFloat(translateXSlider.value);
+            const translateY = parseFloat(translateYSlider.value);
+            const rotateX = (parseFloat(rotateXSlider.value) * Math.PI) / 180; // 转换为弧度
+            const rotateY = (parseFloat(rotateYSlider.value) * Math.PI) / 180; // 转换为弧度
+
+            ctx.save(); // 保存当前状态
+            ctx.translate(centerX + translateX, centerY + translateY); // 平移
+
+            // 绕X轴旋转
+            ctx.transform(1, 0, 0, Math.cos(rotateX), 0, -Math.sin(rotateX)); 
+            ctx.transform(1, 0, 0, 1, 0, 0); // 重新设置其他方向的变换
+
+            // 绕Y轴旋转
+            ctx.transform(Math.cos(rotateY), 0, Math.sin(rotateY), 1, 0, 0);
+
+            // 缩放
+            ctx.scale(parseFloat(scaleXSlider.value), parseFloat(scaleYSlider.value));
+
+            ctx.fillStyle = 'blue'; // 设置颜色
+            ctx.fillRect(-squareSize / 2, -squareSize / 2, squareSize, squareSize); // 画正方形
+
+            ctx.restore(); // 恢复状态
+        }
+
+        // 监听滑块变化
+        translateXSlider.addEventListener('input', drawSquare);
+        translateYSlider.addEventListener('input', drawSquare);
+        rotateXSlider.addEventListener('input', drawSquare);
+        rotateYSlider.addEventListener('input', drawSquare);
+        scaleXSlider.addEventListener('input', drawSquare);
+        scaleYSlider.addEventListener('input', drawSquare);
+
+        drawSquare(); // 初始绘制
+    </script>
+</body>
+</html>
